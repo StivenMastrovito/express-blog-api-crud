@@ -2,10 +2,18 @@ import menu from "../dati.js"
 
 function index(req, res) {
     const tag = req.query.tags;
-    let filteredMenu = menu;
+    const prezzoMin = parseFloat(req.query.prezzomin);
+    const prezzoMax = parseInt(req.query.prezzomax);
+    let filteredMenu = menu;   
 
     if (tag !== undefined) {
-        filteredMenu = menu.filter(({ tags }) => tags.includes(tag));
+        filteredMenu = filteredMenu.filter(({ tags }) => tags.includes(tag));
+    }
+    if (prezzoMin !== undefined) {
+        filteredMenu = filteredMenu.filter(({ prezzo }) => prezzo >= prezzoMin);
+    }
+    if (prezzoMax !== undefined) {
+        filteredMenu = filteredMenu.filter(({ prezzo }) => prezzo <= prezzoMax);
     }
 
     res.json(filteredMenu)
