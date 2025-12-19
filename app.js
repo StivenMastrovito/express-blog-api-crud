@@ -1,7 +1,17 @@
 import express from "express"
 import routerMenu from "./routers/menu.js";
+import cors from "cors"
+
+
 const app = express();
 const port = 3000;
+
+const corsOption = {
+    origin: "http://localhost:5173"
+}
+app.use(cors(corsOption));
+
+app.use(express.json());
 
 app.use(express.static("public"))
 
