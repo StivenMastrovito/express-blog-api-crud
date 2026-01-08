@@ -1,6 +1,7 @@
 import express from "express"
 import routerMenu from "./routers/menu.js";
 import cors from "cors"
+import notFound from "./middlewares/notFound.js";
 
 
 const app = express();
@@ -21,6 +22,7 @@ app.get("/", (req, res) => {
 
 app.use("/menu", routerMenu);
 
+app.use(notFound);
 
 
 

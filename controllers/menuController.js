@@ -1,37 +1,30 @@
 import menu from "../dati.js"
 
 function index(req, res) {
-    const tag = req.query.tags;
+    const tag = req.query.tag;
     const prezzoMin = parseFloat(req.query.prezzomin);
-    const prezzoMax = parseInt(req.query.prezzomax);
+    const prezzoMax = parseFloat(req.query.prezzomax);
+    
     let filteredMenu = menu;   
+    console.log(tag, prezzoMin, prezzoMax);
 
     if (tag !== undefined) {
         filteredMenu = filteredMenu.filter(({ tags }) => tags.includes(tag));
     }
-    if (prezzoMin !== undefined) {
+    if (!isNaN(prezzoMin)) {
         filteredMenu = filteredMenu.filter(({ prezzo }) => prezzo >= prezzoMin);
     }
-    if (prezzoMax !== undefined) {
+    if (!isNaN(prezzoMax)) {
         filteredMenu = filteredMenu.filter(({ prezzo }) => prezzo <= prezzoMax);
     }
-
+    
     res.json(filteredMenu)
 
 
 }
 
 function show(req, res) {
-    const id = parseInt(req.params.id);
-    const elem = menu.find((item) => item.id === id);
-
-    if (elem === undefined) {
-        res.status(404);
-        return res.json({
-            error: "Not Found",
-            message: "Elemento non trovato",
-        })
-    }
+    const elem = req.item;
     res.json(elem)
 }
 
@@ -60,16 +53,7 @@ function store(req, res) {
 }
 
 function update(req, res) {
-    const id = parseInt(req.params.id);
-
-    if (id === undefined) {
-        res.status(404);
-        return res.json({
-            error: "Not Found",
-            message: "Elemento non trovato",
-        })
-    }
-
+    const item = req.item;
     const dati = req.body;
     
 
@@ -81,7 +65,6 @@ function update(req, res) {
         })
     }
 
-    const item = menu.find((elem) => elem.id === id);
 
     item.nome = dati.nome;
     item.prezzo = dati.prezzo;
@@ -92,28 +75,17 @@ function update(req, res) {
 }
 
 function modify(req, res) {
-    const id = parseInt(req.params.id);
+    const item = req.item;
 
     res.send(`Modifica parzialmente l'elemento con id: ${id}`);
 }
 
 function destroy(req, res) {
-    const id = parseInt(req.params.id);
-    console.log(id);
-
-    const indexId = menu.findIndex((item) => item.id === id);
-    console.log(indexId);
-
-    if (indexId === -1) {
-        res.status(404);
-        return res.json({
-            error: "Not Found",
-            message: "Elemento non trovato",
-        })
-    }
+    const indexId = menu.findIndex((item) => item.id === req.id);
 
     menu.splice(indexId, 1);
     res.status(200);
+    res.json(menu)
 }
 const controller = {
     index,
