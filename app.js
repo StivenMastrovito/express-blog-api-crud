@@ -10,6 +10,7 @@ const port = 3000;
 const corsOption = {
     origin: "http://localhost:5173"
 }
+
 app.use(cors(corsOption));
 
 app.use(express.json());
@@ -17,7 +18,7 @@ app.use(express.json());
 app.use(express.static("public"))
 
 app.get("/", (req, res) => {
-    res.send("Benvenuto nell' API del Kyosco Cafe");
+    res.send("Benvenuto nell' API del mio bar");
 })
 
 app.use("/menu", routerMenu);

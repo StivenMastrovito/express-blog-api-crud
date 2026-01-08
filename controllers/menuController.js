@@ -87,6 +87,8 @@ function destroy(req, res) {
     res.status(200);
     res.json(menu)
 }
+
+
 const controller = {
     index,
     show,
